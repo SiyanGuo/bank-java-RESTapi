@@ -82,7 +82,7 @@ public class ClientDao {
             String sql = "UPDATE clients " +
                     "SET first_name = ?, " +
                     "last_name = ?, " +
-                    "age = ? " +
+                    "age = ?, " +
                     "phone_number = ? " +
                     "WHERE id = ?";
 
