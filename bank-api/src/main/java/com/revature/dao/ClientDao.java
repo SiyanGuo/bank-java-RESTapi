@@ -9,7 +9,6 @@ import java.util.List;
 
 public class ClientDao {
 
-
     //Create - add a new client
     public Client addClient(Client client) throws SQLException {
 
@@ -74,7 +73,6 @@ public class ClientDao {
         }
        // return null;
     }
-
 
     //Update - update an existing client
     public Client updateClient(Client client) throws SQLException{
