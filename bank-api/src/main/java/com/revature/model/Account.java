@@ -1,5 +1,7 @@
 package com.revature.model;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.Objects;
 
 public class Account {
@@ -7,14 +9,22 @@ public class Account {
     private int id;
     private String accountType;
     private String accountNumber;
-    private double balance;
+    private BigDecimal balance;
     private String dateOpened;
     private int clientId;
 
     public Account(){
     }
 
-    public Account(int id, String accountType, String accountNumber, double balance, String dateOpened, int clientId) {
+
+//    public Account(int id, String accountType, String accountNumber, String dateOpened) {
+//        this.id = id;
+//        this.accountType = accountType;
+//        this.accountNumber = accountNumber;
+//        this.dateOpened = dateOpened;
+//    }
+
+    public Account(int id, String accountType, String accountNumber, BigDecimal balance, String dateOpened, int clientId) {
         this.id = id;
         this.accountType = accountType;
         this.accountNumber = accountNumber;
@@ -47,11 +57,11 @@ public class Account {
         this.accountNumber = accountNumber;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
@@ -76,7 +86,7 @@ public class Account {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return id == account.id && Double.compare(account.balance, balance) == 0 && clientId == account.clientId && Objects.equals(accountType, account.accountType) && Objects.equals(accountNumber, account.accountNumber) && Objects.equals(dateOpened, account.dateOpened);
+        return id == account.id && clientId == account.clientId && Objects.equals(accountType, account.accountType) && Objects.equals(accountNumber, account.accountNumber) && Objects.equals(balance, account.balance) && Objects.equals(dateOpened, account.dateOpened);
     }
 
     @Override
