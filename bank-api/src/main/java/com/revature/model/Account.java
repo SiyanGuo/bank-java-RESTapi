@@ -17,13 +17,6 @@ public class Account {
     }
 
 
-//    public Account(int id, String accountType, String accountNumber, String dateOpened) {
-//        this.id = id;
-//        this.accountType = accountType;
-//        this.accountNumber = accountNumber;
-//        this.dateOpened = dateOpened;
-//    }
-
     public Account(int id, String accountType, String accountNumber, BigDecimal balance, String dateOpened, int clientId) {
         this.id = id;
         this.accountType = accountType;

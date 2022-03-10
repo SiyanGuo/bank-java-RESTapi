@@ -39,7 +39,6 @@ public class AccountService {
         }
     };
 
-
     public Account getAccountById(String idClient, String idAccount) throws ClientNotFoundException, SQLException, AccountNotFoundException {
         try {
             int clientId = Integer.parseInt(idClient);
@@ -63,7 +62,53 @@ public class AccountService {
         }
     };
 
+    public Account addAccount(Account account, String clientId) throws SQLException, ClientNotFoundException {
+        try {
+            validateAccountInformation(account);
+            int id = Integer.parseInt(clientId);
+
+            Client client = clientDao.getClientById(id);
+            if (client == null) {
+                throw new ClientNotFoundException("Client with id " + id + " was not found");
+            }
+
+            return this.accountDao.addAccount(account, id);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Client ID must be a valid number");
+        }
+    };
 
 
+    public boolean updateAccount (Account account, String idClient, String idAccount) throws ClientNotFoundException, SQLException{
+        try {
+            //validateAccountInformation(account);
+            int clientId = Integer.parseInt(idClient);
+            int accountId = Integer.parseInt(idAccount);
+
+            Client client = clientDao.getClientById(clientId);
+            if (client == null) {
+                throw new ClientNotFoundException("Client with id " + clientId + " was not found");
+            }
+
+            return this.accountDao.updateAccount(account, clientId , accountId);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Client and/or Account ID must be a valid number");
+        }
+    };
+
+    private void validateAccountInformation(Account a) {
+        a.setAccountType(a.getAccountType().trim());
+        a.setAccountNumber(a.getAccountNumber().trim());
+        a.setDateOpened(a.getDateOpened().trim());
+
+//        if (!a.getDateOpened().matches("/^d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/")) {
+//            throw new IllegalArgumentException("Date format must be YYYY-MM-DD. Date input was " + a.getDateOpened());
+//        }
+//
+//        if (!a.getAccountNumber().matches("/d{8}/")) {
+//            throw new IllegalArgumentException("Account Number must be 8 digits. Account Number input was " + a.getAccountNumber());
+//        }
+
+    };
 
 }

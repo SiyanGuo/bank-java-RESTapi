@@ -78,7 +78,7 @@ public class ClientService {
         }
     };
 
-    public void validateClientInformation(Client c) {
+    private void validateClientInformation(Client c) {
         c.setFirstName(c.getFirstName().trim());
         c.setLastName(c.getLastName().trim());
 
@@ -91,6 +91,6 @@ public class ClientService {
         if (c.getAge() < 0) {
             throw new IllegalArgumentException("Adding a client with age < 0 is not valid. Age provided was " + c.getAge());
         }
-        ;
+
     }
 }

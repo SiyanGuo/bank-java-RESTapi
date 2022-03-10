@@ -71,6 +71,24 @@ public class ClientController implements Controller {
         ctx.json(account);
     };
 
+    private Handler addAccount = (ctx) ->{
+        String clientId = ctx.pathParam("clientId");
+        Account accountToAdd = ctx.bodyAsClass(Account.class);
+        Account account = accountService.addAccount(accountToAdd, clientId);
+
+        ctx.status(201);
+        ctx.json(account);
+    };
+
+    private Handler updateAccount = (ctx) -> {
+        String clientId = ctx.pathParam("clientId");
+        String accountId = ctx.pathParam("accountId");
+        Account accountToEdit = ctx.bodyAsClass(Account.class);
+        boolean account = accountService.updateAccount(accountToEdit, clientId, accountId);
+
+        ctx.status(201);
+        ctx.json("Account information has been updated");
+    };
 
     @Override
     public void mapEndpoints(Javalin app) {
@@ -79,10 +97,10 @@ public class ClientController implements Controller {
         app.post("/clients", addClient);
         app.put("/clients/{clientId}", editClient);
         app.delete("/clients/{clientId}", deleteClient);
- //       app.post("/clients/{clientId}/accounts", addAccount);
+        app.post("/clients/{clientId}/accounts", addAccount);
         app.get("/clients/{clientId}/accounts", getAccountsByClient);
         app.get("/clients/{clientId}/accounts/{accountId}", getAccountById);
- //       app.put("/clients/{clientId}/accounts/{accountId}",updateAccount);
+        app.put("/clients/{clientId}/accounts/{accountId}",updateAccount);
  //       app.delete("/clients/{clientId}/accounts/{accountId}", deleteAccount);
     }
 }

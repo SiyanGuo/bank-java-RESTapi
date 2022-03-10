@@ -80,7 +80,7 @@ public class AccountDao {
     };
 
     //PUT
-    public boolean updateAccount(Account account) throws SQLException {
+    public boolean updateAccount(Account account, int clientId, int accountId) throws SQLException {
         try (Connection con = ConnectionUtility.getConnection()) {
             String sql = "update accounts " +
                     "set " +
@@ -90,8 +90,8 @@ public class AccountDao {
             PreparedStatement pstsm = con.prepareStatement(sql);
 
             pstsm.setBigDecimal(1, account.getBalance());
-            pstsm.setInt(2, account.getClientId());
-            pstsm.setInt(3, account.getId());
+            pstsm.setInt(2, clientId);
+            pstsm.setInt(3, accountId);
 
             int numberOfRecordsUpdated = pstsm.executeUpdate();
 
