@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 
 public class Driver {
-   public static Logger logger = LoggerFactory.getLogger(Driver.class);
+  public static Logger logger = LoggerFactory.getLogger(Driver.class);
 
 
    public static void main(String[] args) throws SQLException {

@@ -80,11 +80,41 @@ public class AccountDao {
     };
 
     //PUT
-    public Account updateAccount(Account account) throws SQLException {
-        return null;
+    public boolean updateAccount(Account account) throws SQLException {
+        try (Connection con = ConnectionUtility.getConnection()) {
+            String sql = "update accounts " +
+                    "set " +
+                    "balance = ? " +
+                    "where client_id= ? " +
+                    "and id = ?";
+            PreparedStatement pstsm = con.prepareStatement(sql);
+
+            pstsm.setBigDecimal(1, account.getBalance());
+            pstsm.setInt(2, account.getClientId());
+            pstsm.setInt(3, account.getId());
+
+            int numberOfRecordsUpdated = pstsm.executeUpdate();
+
+            if (numberOfRecordsUpdated == 1) {
+                return true;
+            }
+        }
+        return false;
     };
 
     public boolean deleteAccount(int clientId, int accountId) throws SQLException{
-        return true;
+        try (Connection con = ConnectionUtility.getConnection()) {
+            String sql = "DELETE FROM accounts WHERE client_id = ? and id = ?";
+
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, clientId);
+            pstmt.setInt(2, accountId);
+            int numberOfRecordsDeleted = pstmt.executeUpdate(); // executeUpdate() is used with INSERT, UPDATE, DELETE
+
+            if (numberOfRecordsDeleted == 1) {
+                return true;
+            }
+        }
+        return false;
     };
 }
