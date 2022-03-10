@@ -58,12 +58,12 @@ public class AccountDao {
     };
 
     //GET ONE
-    public Account getAccountById (int clientId, int id) throws SQLException{
+    public Account getAccountById (int clientId, int accountId) throws SQLException{
       try (Connection con = ConnectionUtility.getConnection()) {
           String sql = "select * from accounts where client_id = ? and id = ?";
           PreparedStatement pstmt = con.prepareStatement(sql);
           pstmt.setInt(1, clientId);
-          pstmt.setInt(2, id);
+          pstmt.setInt(2, accountId);
 
           ResultSet rs = pstmt.executeQuery();
 
@@ -73,7 +73,7 @@ public class AccountDao {
               BigDecimal balance = rs.getBigDecimal("balance");
               String dateOpened = rs.getString("date_opened");
 
-              return new Account(id, accountType, accountNumber, balance, dateOpened, clientId);
+              return new Account(accountId, accountType, accountNumber, balance, dateOpened, clientId);
           }
       }
         return null;
