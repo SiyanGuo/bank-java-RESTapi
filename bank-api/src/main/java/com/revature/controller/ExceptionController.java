@@ -6,6 +6,8 @@ import io.javalin.http.ExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 public class ExceptionController implements Controller {
 
     private Logger logger = LoggerFactory.getLogger(ExceptionController.class);
@@ -24,9 +26,17 @@ public class ExceptionController implements Controller {
         ctx.json(e.getMessage());
     };
 
+    private ExceptionHandler AccountNotFound = (e, ctx) -> {
+        logger.warn("User input a bad argument. Exception message is " + e.getMessage());
+
+        ctx.status(400);
+        ctx.json(e.getMessage());
+    };
+
     @Override
     public void mapEndpoints(Javalin app) {
         app.exception(ClientNotFoundException.class, ClientNotFound);
+        app.exception(AccountNotFoundException.class, AccountNotFound);
         app.exception(IllegalArgumentException.class, badArgument);
     }
 }
