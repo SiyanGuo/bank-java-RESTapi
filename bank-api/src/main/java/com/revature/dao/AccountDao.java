@@ -34,10 +34,11 @@ public class AccountDao {
     };
 
     //GET ALL
-    public List<Account> getAccountsByClient (int clientId) throws SQLException{
+    public List<Account> getAccountsByClient (int clientId ) throws SQLException{
       List<Account> accounts = new ArrayList<>();
 
       try (Connection con = ConnectionUtility.getConnection()) {
+
           String sql = "SELECT * FROM accounts where client_id =?";
 
           PreparedStatement pstmt = con.prepareStatement(sql);

@@ -29,10 +29,12 @@ public class AccountService {
 
        try {
            int clientId = Integer.parseInt(id);
+
            Client client = clientDao.getClientById(clientId);
            if (client == null) {
                throw new ClientNotFoundException("Client with id " + clientId + " was not found");
            }
+
            return this.accountDao.getAccountsByClient(clientId);
        } catch (NumberFormatException e){
             throw new IllegalArgumentException("Client id must be a valid number");
@@ -126,8 +128,8 @@ public class AccountService {
                         + " of client with id " + clientId + " was not found");
             };
 
-            boolean client = clientDao.deleteClientById(clientId);
-            return client;
+            boolean account = accountDao.deleteAccount(clientId, accountId);
+            return account;
 
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Client and/or Account id must be a valid number");
