@@ -34,7 +34,7 @@ public class ClientService {
             }
             return client;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Client ID must be a valid number");
+            throw new IllegalArgumentException("Client id must be a valid number");
         }
     }
 
@@ -58,7 +58,7 @@ public class ClientService {
            c.setId(clientId);
            return this.clientDao.updateClient(c);
        } catch (NumberFormatException e){
-           throw new IllegalArgumentException("Id provided for student must be a valid int");
+           throw new IllegalArgumentException("Client id must be a valid number");
        }
 
     };
@@ -74,11 +74,11 @@ public class ClientService {
             boolean client = clientDao.deleteClientById(clientId);
             return client;
         } catch (NumberFormatException e){
-            throw new IllegalArgumentException("Id provided for student must be a valid int");
+            throw new IllegalArgumentException("Client id must be a valid number");
         }
     };
 
-    public void validateClientInformation(Client c) {
+    private void validateClientInformation(Client c) {
         c.setFirstName(c.getFirstName().trim());
         c.setLastName(c.getLastName().trim());
 
@@ -91,6 +91,6 @@ public class ClientService {
         if (c.getAge() < 0) {
             throw new IllegalArgumentException("Adding a client with age < 0 is not valid. Age provided was " + c.getAge());
         }
-        ;
+
     }
 }
