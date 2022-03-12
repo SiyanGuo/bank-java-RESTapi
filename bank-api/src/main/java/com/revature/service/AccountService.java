@@ -124,15 +124,11 @@ public class AccountService {
     public Account addAccount(Account a, String clientId) throws SQLException, ClientNotFoundException {
         try {
             a.setAccountType(a.getAccountType().trim());
-            a.setAccountNumber(a.getAccountNumber().trim());
+
             a.setDateOpened(a.getDateOpened().trim());
 
             if (!a.getDateOpened().matches("^((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")) {
                 throw new IllegalArgumentException("Date format must be YYYY-MM-DD. Date input was " + a.getDateOpened());
-            }
-
-            if (!a.getAccountNumber().matches("\\d{8}")) {
-                throw new IllegalArgumentException("Account Number must be 8 digits. Account Number input was " + a.getAccountNumber());
             }
 
             int id = Integer.parseInt(clientId);
