@@ -7,7 +7,6 @@ import com.revature.service.ClientService;
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -44,15 +43,15 @@ public class ClientController implements Controller {
         Client clientToEdit = ctx.bodyAsClass(Client.class);
         Client client = clientService.editClient(id, clientToEdit);
 
-        ctx.status(204);
-        ctx.json("Client information has been updated");
+        ctx.status(201);
+        ctx.json(client);
     };
 
     private Handler deleteClient = (ctx) -> {
         String id = ctx.pathParam("clientId");
         boolean client = clientService.deleteClient(id);
 
-        ctx.status(204);
+        ctx.status(201);
         ctx.json("Client with id " + id + " has been deleted");
     };
 
@@ -102,7 +101,7 @@ public class ClientController implements Controller {
         Account accountToEdit = ctx.bodyAsClass(Account.class);
         boolean account = accountService.updateAccount(accountToEdit, clientId, accountId);
 
-        ctx.status(204);
+        ctx.status(201);
         ctx.json("Account information has been updated");
     };
 
@@ -111,7 +110,7 @@ public class ClientController implements Controller {
         String accountId = ctx.pathParam("accountId");
         boolean account = accountService.deleteAccount(clientId, accountId);
 
-        ctx.status(204);
+        ctx.status(201);
         ctx.json("Account with id " + accountId + " of client with id " + clientId + " has been deleted");
 
     };

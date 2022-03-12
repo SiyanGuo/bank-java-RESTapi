@@ -17,6 +17,7 @@ import static org.mockito.Mockito.when;
 
 public class ClientServiceTest {
 
+    //GET
     @Test
     public void testGetAllClients() throws SQLException {
 
@@ -35,7 +36,6 @@ public class ClientServiceTest {
         Assertions.assertEquals(expected, actual);
     }
 
-
     @Test
     public void testGetClientById_positiveTest() throws SQLException, ClientNotFoundException {
 
@@ -53,7 +53,6 @@ public class ClientServiceTest {
         Assertions.assertEquals(expected, actual);
     }
 
-
     @Test
     public void test_getClientById_clientDoesNotExist() throws SQLException, ClientNotFoundException {
 
@@ -65,7 +64,6 @@ public class ClientServiceTest {
         });
     }
 
-
     @Test
     public void test_getClientById_invalidId() throws SQLException, ClientNotFoundException {
 
@@ -76,12 +74,11 @@ public class ClientServiceTest {
             clientService.getClientById("xyz");
             fail();
         } catch(IllegalArgumentException e) {
-            String expectedMessage = "Client ID must be a valid number";
+            String expectedMessage = "Client id must be a valid number";
             String actualMessage = e.getMessage();
             Assertions.assertEquals(expectedMessage, actualMessage);
         }
     }
-
 
     @Test
     public void test_getClientById_sqlExceptionFromDao() throws SQLException {
@@ -96,4 +93,147 @@ public class ClientServiceTest {
             clientService.getClientById("100");
         });
     }
+
+    //POST
+    @Test
+    public void test_addClient_positiveTest() throws SQLException{
+        ClientDao mockDao = mock(ClientDao.class);
+
+        when(mockDao.addClient(eq(new Client(7, "Serena", "Guo", 22, "647-000-0001"))))
+                .thenReturn(new Client(7, "Serena", "Guo", 22, "647-000-0001"));
+
+        ClientService clientService = new ClientService(mockDao);
+
+        Client actual = clientService.addClient(new Client(7, "Serena", "Guo", 22, "647-000-0001"));
+        Client expected = new Client(7, "Serena", "Guo", 22, "647-000-0001");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test_addClient_nonAlphabeticalCharactersInFirstName() throws SQLException {
+
+        ClientDao mockDao = mock(ClientDao.class);
+        ClientService clientService = new ClientService(mockDao);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            clientService.addClient(new Client(0, "Serena123", "Guo", 22, "647-000-0001"));
+        });
+    }
+
+    @Test
+    public void test_addClient_nonAlphabeticalCharactersInLastName() {
+
+        ClientDao mockDao = mock(ClientDao.class);
+        ClientService clientService = new ClientService(mockDao);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            clientService.addClient(new Client(0, "Serena", "Guo56", 22, "647-000-0001"));
+        });
+    }
+
+    @Test
+    public void test_addClient_negativeAge() {
+
+        ClientDao mockDao = mock(ClientDao.class);
+        ClientService clientService = new ClientService(mockDao);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            clientService.addClient(new Client(0, "Serena", "Guo", -10, "647-000-0001"));
+        });
+    }
+
+    @Test
+    public void test_addClient_phoneNumber(){
+        ClientDao mockDao = mock(ClientDao.class);
+        ClientService clientService = new ClientService(mockDao);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            clientService.addClient(new Client(0, "Serena", "Guo", -10, "647-00-0001"));
+        });
+    }
+
+    //PUT
+    @Test
+    public void test_editClientById_clientDoesNotExist() throws SQLException, ClientNotFoundException {
+
+        ClientDao mockDao = mock(ClientDao.class);
+        ClientService clientService = new ClientService(mockDao);
+        Client mockClient = mock(Client.class);
+        Assertions.assertThrows(ClientNotFoundException.class, () -> {
+            clientService.editClient("100", mockClient);
+        });
+    }
+
+    @Test
+    public void test_editClientById_invalidId() throws SQLException, ClientNotFoundException {
+
+        ClientDao mockDao = mock(ClientDao.class);
+        Client mockClient = mock(Client.class);
+        ClientService clientService = new ClientService(mockDao);
+
+        try {
+            clientService.editClient("xyz", mockClient);
+            fail();
+        } catch(IllegalArgumentException e) {
+            String expectedMessage = "Client id must be a valid number";
+            String actualMessage = e.getMessage();
+            Assertions.assertEquals(expectedMessage, actualMessage);
+        }
+    }
+
+    @Test
+    public void test_editClientById_sqlExceptionFromDao() throws SQLException {
+
+        ClientDao mockDao = mock(ClientDao.class);
+        Client mockClient = mock(Client.class);
+        when(mockDao.getClientById(anyInt())).thenThrow(SQLException.class);
+
+        ClientService clientService = new ClientService(mockDao);
+
+        Assertions.assertThrows(SQLException.class, () -> {
+            clientService.editClient("100", mockClient);
+        });
+    }
+
+    //DELETE
+    @Test
+    public void test_deleteClientById_clientDoesNotExist() throws SQLException, ClientNotFoundException {
+
+        ClientDao mockDao = mock(ClientDao.class);
+        ClientService clientService = new ClientService(mockDao);
+
+        Assertions.assertThrows(ClientNotFoundException.class, () -> {
+            clientService.deleteClient("100");
+        });
+    }
+
+    @Test
+    public void test_deleteClientById_invalidId() throws SQLException, ClientNotFoundException {
+
+        ClientDao mockDao = mock(ClientDao.class);
+        ClientService clientService = new ClientService(mockDao);
+
+        try {
+            clientService.deleteClient("xyz");
+            fail();
+        } catch(IllegalArgumentException e) {
+            String expectedMessage = "Client id must be a valid number";
+            String actualMessage = e.getMessage();
+            Assertions.assertEquals(expectedMessage, actualMessage);
+        }
+    }
+
+    @Test
+    public void test_deleteClientById_sqlExceptionFromDao() throws SQLException {
+
+        ClientDao mockDao = mock(ClientDao.class);
+        when(mockDao.getClientById(anyInt())).thenThrow(SQLException.class);
+
+        ClientService clientService = new ClientService(mockDao);
+
+        Assertions.assertThrows(SQLException.class, () -> {
+            clientService.deleteClient("100");
+        });
+    }
+
 }
