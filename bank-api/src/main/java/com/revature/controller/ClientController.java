@@ -43,7 +43,7 @@ public class ClientController implements Controller {
         Client clientToEdit = ctx.bodyAsClass(Client.class);
         Client client = clientService.editClient(id, clientToEdit);
 
-        ctx.status(200);
+        ctx.status(201);
         ctx.json(client);
     };
 
@@ -51,16 +51,31 @@ public class ClientController implements Controller {
         String id = ctx.pathParam("clientId");
         boolean client = clientService.deleteClient(id);
 
-        ctx.status(200);
+        ctx.status(201);
         ctx.json("Client with id " + id + " has been deleted");
     };
 
     private Handler getAccountsByClient = (ctx) -> {
+
+        String greaterThan = ctx.queryParam("amountGreaterThan");
+        String lessThan = ctx.queryParam("amountLessThan");
         String id = ctx.pathParam("clientId");
+        List<Account> accounts ;
+        if (lessThan!=null && greaterThan!=null ) {
+            accounts = accountService.getAccountsByGreatAndLessThan(id, greaterThan, lessThan);
+        } else if (lessThan!=null ) {
+            accounts = accountService.getAccountsByLessThan(id, lessThan);
+        } else if (greaterThan!=null ){
+            accounts = accountService.getAccountsByGreaterThan(id, greaterThan);
+        } else {
+            accounts = accountService.getAccountsByClient(id);
+        }
+        if (accounts.isEmpty()) {
+            ctx.json("Account was not found");
+        } else {
+            ctx.json(accounts);
+        }
 
-        List<Account> accounts = accountService.getAccountsByClient(id);
-
-        ctx.json(accounts);
     };
 
     private Handler getAccountById = (ctx) -> {
@@ -95,8 +110,9 @@ public class ClientController implements Controller {
         String accountId = ctx.pathParam("accountId");
         boolean account = accountService.deleteAccount(clientId, accountId);
 
-        ctx.status(200);
-        ctx.json("Account with id " + accountId + " of client with id " + clientId + "has been deleted");
+        ctx.status(201);
+        ctx.json("Account with id " + accountId + " of client with id " + clientId + " has been deleted");
+
     };
 
     @Override

@@ -29,15 +29,74 @@ public class AccountService {
 
        try {
            int clientId = Integer.parseInt(id);
+
            Client client = clientDao.getClientById(clientId);
            if (client == null) {
                throw new ClientNotFoundException("Client with id " + clientId + " was not found");
            }
+
            return this.accountDao.getAccountsByClient(clientId);
        } catch (NumberFormatException e){
             throw new IllegalArgumentException("Client id must be a valid number");
         }
     };
+
+    public List<Account> getAccountsByGreaterThan(String id, String greaterThan) throws ClientNotFoundException, SQLException {
+
+        try {
+            int clientId = Integer.parseInt(id);
+            int amountGreater = Integer.parseInt(greaterThan);
+
+            Client client = clientDao.getClientById(clientId);
+            if (client == null) {
+                throw new ClientNotFoundException("Client with id " + clientId + " was not found");
+            }
+            return this.accountDao.getAccountsByGreaterThan(clientId, amountGreater);
+
+        } catch (NumberFormatException e){
+            throw new IllegalArgumentException("Parameters must be valid number");
+        }
+    };
+
+    public List<Account> getAccountsByLessThan(String id, String lessThan) throws ClientNotFoundException, SQLException {
+
+        try {
+            int clientId = Integer.parseInt(id);
+            int amountLess = Integer.parseInt(lessThan);
+
+            Client client = clientDao.getClientById(clientId);
+            if (client == null) {
+                throw new ClientNotFoundException("Client with id " + clientId + " was not found");
+            }
+
+            return this.accountDao.getAccountsByLessThan(clientId, amountLess);
+        } catch (NumberFormatException e){
+            throw new IllegalArgumentException("Parameters must be valid number");
+        }
+    };
+
+    public List<Account> getAccountsByGreatAndLessThan(String id, String greaterThan, String lessThan) throws ClientNotFoundException, SQLException {
+
+        try {
+            int clientId = Integer.parseInt(id);
+            int max = Integer.parseInt(lessThan);
+            int min = Integer.parseInt(greaterThan);
+
+            if (min >= max){
+                throw new IllegalArgumentException( "Amount less than " + min + " and greater than " + max + " doesn't exist" );
+            }
+
+            Client client = clientDao.getClientById(clientId);
+            if (client == null) {
+                throw new ClientNotFoundException("Client with id " + clientId + " was not found");
+            }
+
+            return this.accountDao.getAccountsByGreatAndLessThan(clientId, min, max);
+        } catch (NumberFormatException e){
+            throw new IllegalArgumentException("Parameters must be valid number");
+        }
+    };
+
 
     public Account getAccountById(String idClient, String idAccount) throws ClientNotFoundException, SQLException, AccountNotFoundException {
         try {
@@ -126,8 +185,8 @@ public class AccountService {
                         + " of client with id " + clientId + " was not found");
             };
 
-            boolean client = clientDao.deleteClientById(clientId);
-            return client;
+            boolean account = accountDao.deleteAccount(clientId, accountId);
+            return account;
 
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Client and/or Account id must be a valid number");

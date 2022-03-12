@@ -88,6 +88,9 @@ public class ClientService {
         if (!c.getLastName().matches("[a-zA-Z]+")) {
             throw new IllegalArgumentException("Last name must only have alphabetical characters. Last name input was " + c.getLastName());
         }
+        if (!c.getPhoneNumber().matches("^[0-9]{3}[-][0-9]{3}[-][0-9]{4}$")) {
+            throw new IllegalArgumentException("Phone number format must follow xxx-xxx-xxxx. Phone number input was " + c.getPhoneNumber());
+        }
         if (c.getAge() < 0) {
             throw new IllegalArgumentException("Adding a client with age < 0 is not valid. Age provided was " + c.getAge());
         }
