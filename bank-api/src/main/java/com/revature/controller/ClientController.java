@@ -7,6 +7,7 @@ import com.revature.service.ClientService;
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,16 +57,25 @@ public class ClientController implements Controller {
     };
 
     private Handler getAccountsByClient = (ctx) -> {
-        String id = ctx.pathParam("clientId");
-        List<Account> accounts = accountService.getAccountsByClient(id);
-        ctx.json(accounts);
 
-//        String id = ctx.pathParam("clientId");
-//        String greaterThan = ctx.queryParam("amountGreaterThan");
-//        String lessThan = ctx.queryParam("amountLessThan");
-//        List<Account> accounts = accountService.getAccountsByClient(id, greaterThan, lessThan);
-//        System.out.println("query param of greater than"+ greaterThan);
-//        ctx.json(accounts);
+        String greaterThan = ctx.queryParam("amountGreaterThan");
+        String lessThan = ctx.queryParam("amountLessThan");
+        String id = ctx.pathParam("clientId");
+        List<Account> accounts ;
+        if (lessThan!=null && greaterThan!=null ) {
+            accounts = accountService.getAccountsByGreatAndLessThan(id, greaterThan, lessThan);
+        } else if (lessThan!=null ) {
+            accounts = accountService.getAccountsByLessThan(id, lessThan);
+        } else if (greaterThan!=null ){
+            accounts = accountService.getAccountsByGreaterThan(id, greaterThan);
+        } else {
+            accounts = accountService.getAccountsByClient(id);
+        }
+        if (accounts.isEmpty()) {
+            ctx.json("Account was not found");
+        } else {
+            ctx.json(accounts);
+        }
 
     };
 

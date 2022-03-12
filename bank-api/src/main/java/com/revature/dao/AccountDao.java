@@ -58,6 +58,85 @@ public class AccountDao {
         return accounts;
     };
 
+    //GET ACCOUNTS BY PATH PARAMS
+    public List<Account> getAccountsByGreaterThan (int clientId, int amountGreater ) throws SQLException{
+        List<Account> accounts = new ArrayList<>();
+
+        try (Connection con = ConnectionUtility.getConnection()) {
+
+            String sql = "SELECT * FROM accounts where client_id =? and balance > ?";
+
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, clientId);
+            pstmt.setInt(2, amountGreater);
+            ResultSet rs = pstmt.executeQuery();
+            if(!rs.next()) { return accounts;}
+
+            do {
+                int id = rs.getInt("id");
+                String accountType = rs.getString("a_type");
+                String accountNumber = rs.getString("a_number");
+                BigDecimal balance = rs.getBigDecimal("balance");
+                String dateOpened = rs.getString("date_opened");
+
+                accounts.add(new Account(id, accountType, accountNumber, balance, dateOpened, clientId));
+            }while(rs.next());
+        }
+        return accounts;
+    };
+
+    public List<Account> getAccountsByLessThan (int clientId, int amountLess ) throws SQLException{
+        List<Account> accounts = new ArrayList<>();
+
+        try (Connection con = ConnectionUtility.getConnection()) {
+
+            String sql = "SELECT * FROM accounts where client_id =? and balance < ?";
+
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, clientId);
+            pstmt.setInt(2, amountLess);
+            ResultSet rs = pstmt.executeQuery();
+            if(!rs.next()) { return accounts;}
+            do {
+                int id = rs.getInt("id");
+                String accountType = rs.getString("a_type");
+                String accountNumber = rs.getString("a_number");
+                BigDecimal balance = rs.getBigDecimal("balance");
+                String dateOpened = rs.getString("date_opened");
+
+                accounts.add(new Account(id, accountType, accountNumber, balance, dateOpened, clientId));
+            } while(rs.next());
+        }
+        return accounts;
+    };
+
+    public List<Account> getAccountsByGreatAndLessThan (int clientId, int min, int max ) throws SQLException{
+        List<Account> accounts = new ArrayList<>();
+
+        try (Connection con = ConnectionUtility.getConnection()) {
+
+            String sql = "SELECT * FROM accounts where client_id =? and balance > ? and balance < ?";
+
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, clientId);
+            pstmt.setInt(2, min);
+            pstmt.setInt(3, max);
+            ResultSet rs = pstmt.executeQuery();
+            if(!rs.next()) { return accounts;}
+
+            do {
+                int id = rs.getInt("id");
+                String accountType = rs.getString("a_type");
+                String accountNumber = rs.getString("a_number");
+                BigDecimal balance = rs.getBigDecimal("balance");
+                String dateOpened = rs.getString("date_opened");
+
+                accounts.add(new Account(id, accountType, accountNumber, balance, dateOpened, clientId));
+            } while(rs.next());
+        }
+        return accounts;
+    };
+
     //GET ONE
     public Account getAccountById (int clientId, int accountId) throws SQLException{
       try (Connection con = ConnectionUtility.getConnection()) {
