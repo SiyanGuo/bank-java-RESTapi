@@ -3,10 +3,10 @@ package com.revature.service;
 import com.revature.dao.AccountDao;
 import com.revature.dao.ClientDao;
 import com.revature.exception.ClientNotFoundException;
+import com.revature.exception.AccountNotFoundException;
 import com.revature.model.Account;
 import com.revature.model.Client;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -124,9 +124,11 @@ public class AccountService {
     public Account addAccount(Account a, String clientId) throws SQLException, ClientNotFoundException {
         try {
             a.setAccountType(a.getAccountType().trim());
-
             a.setDateOpened(a.getDateOpened().trim());
 
+            if ( !(a.getAccountType() != "Chequing Account" || a.getAccountType() !="Savings Account")) {
+                throw new IllegalArgumentException("Account type must be either Chequing Account or Savings Account. Account type input was " + a.getAccountType());
+            }
             if (!a.getDateOpened().matches("^((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")) {
                 throw new IllegalArgumentException("Date format must be YYYY-MM-DD. Date input was " + a.getDateOpened());
             }
