@@ -13,23 +13,31 @@ public class AccountDao {
     //POST
     public Account addAccount (Account account, int clientId) throws SQLException{
         try (Connection con = ConnectionUtility.getConnection()) {
-            String sql = "INSERT INTO accounts (a_type, a_number, date_opened, client_id) " +
-                    "VALUES ( ?, ?, ?, ?)";
+            String sqlInsert = "INSERT INTO accounts (a_type, a_number, date_opened, client_id) " +
+                    "VALUES ( ?, nextval('account_number'), ?, ?)";
 
-            PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = con.prepareStatement(sqlInsert);
 
             pstmt.setString(1, account.getAccountType());
-            pstmt.setString(2, account.getAccountNumber());
-            pstmt.setDate(3, Date.valueOf(account.getDateOpened()));
-            pstmt.setInt(4, clientId);
-
+            pstmt.setDate(2, Date.valueOf(account.getDateOpened()));
+            pstmt.setInt(3, clientId);
             pstmt.executeUpdate();
 
-            ResultSet rs = pstmt.getGeneratedKeys();
+            String sqlSelect = "select * from accounts where client_id = ? and id = (select max(id) from accounts where client_id = ?)";
+            PreparedStatement ps = con.prepareStatement(sqlSelect);
+            ps.setInt(1, clientId);
+            ps.setInt(2, clientId);
+
+            ResultSet rs = ps.executeQuery();
+
             rs.next();
             int id = rs.getInt("id");
+            String accountType = rs.getString("a_type");
             BigDecimal balance = rs.getBigDecimal("balance");
-            return new Account (id, account.getAccountType(), account.getAccountNumber(), balance, account.getDateOpened(), clientId);
+            int accountNumber = rs.getInt("a_number");
+            String dateOpened = rs.getString("date_opened");
+
+            return new Account (id, accountType ,accountNumber, balance, dateOpened, clientId);
         }
     };
 
@@ -48,7 +56,7 @@ public class AccountDao {
           while(rs.next()){
               int id = rs.getInt("id");
               String accountType = rs.getString("a_type");
-              String accountNumber = rs.getString("a_number");
+              int accountNumber = rs.getInt("a_number");
               BigDecimal balance = rs.getBigDecimal("balance");
               String dateOpened = rs.getString("date_opened");
 
@@ -75,7 +83,7 @@ public class AccountDao {
             do {
                 int id = rs.getInt("id");
                 String accountType = rs.getString("a_type");
-                String accountNumber = rs.getString("a_number");
+                int accountNumber = rs.getInt("a_number");
                 BigDecimal balance = rs.getBigDecimal("balance");
                 String dateOpened = rs.getString("date_opened");
 
@@ -100,7 +108,7 @@ public class AccountDao {
             do {
                 int id = rs.getInt("id");
                 String accountType = rs.getString("a_type");
-                String accountNumber = rs.getString("a_number");
+                int accountNumber = rs.getInt("a_number");
                 BigDecimal balance = rs.getBigDecimal("balance");
                 String dateOpened = rs.getString("date_opened");
 
@@ -127,7 +135,7 @@ public class AccountDao {
             do {
                 int id = rs.getInt("id");
                 String accountType = rs.getString("a_type");
-                String accountNumber = rs.getString("a_number");
+                int accountNumber = rs.getInt("a_number");
                 BigDecimal balance = rs.getBigDecimal("balance");
                 String dateOpened = rs.getString("date_opened");
 
@@ -149,7 +157,7 @@ public class AccountDao {
 
           if(rs.next()){
               String accountType = rs.getString("a_type");
-              String accountNumber = rs.getString("a_number");
+              int accountNumber = rs.getInt("a_number");
               BigDecimal balance = rs.getBigDecimal("balance");
               String dateOpened = rs.getString("date_opened");
 
@@ -182,6 +190,7 @@ public class AccountDao {
         return false;
     };
 
+    //DELETE
     public boolean deleteAccount(int clientId, int accountId) throws SQLException{
         try (Connection con = ConnectionUtility.getConnection()) {
             String sql = "DELETE FROM accounts WHERE client_id = ? and id = ?";

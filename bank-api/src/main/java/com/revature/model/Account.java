@@ -8,7 +8,7 @@ public class Account {
 
     private int id;
     private String accountType;
-    private String accountNumber;
+    private int accountNumber;
     private BigDecimal balance;
     private String dateOpened;
     private int clientId;
@@ -17,7 +17,7 @@ public class Account {
     }
 
 
-    public Account(int id, String accountType, String accountNumber, BigDecimal balance, String dateOpened, int clientId) {
+    public Account(int id, String accountType, int accountNumber, BigDecimal balance, String dateOpened, int clientId) {
         this.id = id;
         this.accountType = accountType;
         this.accountNumber = accountNumber;
@@ -42,11 +42,11 @@ public class Account {
         this.accountType = accountType;
     }
 
-    public String getAccountNumber() {
+    public int getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(String accountNumber) {
+    public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
 
@@ -74,28 +74,5 @@ public class Account {
         this.clientId = clientId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return id == account.id && clientId == account.clientId && Objects.equals(accountType, account.accountType) && Objects.equals(accountNumber, account.accountNumber) && Objects.equals(balance, account.balance) && Objects.equals(dateOpened, account.dateOpened);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, accountType, accountNumber, balance, dateOpened, clientId);
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", accountType='" + accountType + '\'' +
-                ", accountNumber='" + accountNumber + '\'' +
-                ", balance=" + balance +
-                ", dateOpened='" + dateOpened + '\'' +
-                ", clientId=" + clientId +
-                '}';
-    }
 }
