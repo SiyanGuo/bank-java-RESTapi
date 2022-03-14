@@ -81,6 +81,7 @@ public class ClientService {
     private void validateClientInformation(Client c) {
         c.setFirstName(c.getFirstName().trim());
         c.setLastName(c.getLastName().trim());
+        c.setPhoneNumber(c.getPhoneNumber().trim());
 
         if (!c.getFirstName().matches("[a-zA-Z]+")) {
             throw new IllegalArgumentException("First name must only have alphabetical characters. First name input was " + c.getFirstName());

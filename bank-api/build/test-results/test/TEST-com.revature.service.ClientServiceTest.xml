@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.revature.service.ClientServiceTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2022-03-14T02:59:12" hostname="mac.local" time="0.605">
+<testsuite name="com.revature.service.ClientServiceTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2022-03-14T19:48:35" hostname="mac.local" time="0.673">
   <properties/>
-  <testcase name="test_addClient_positiveTest()" classname="com.revature.service.ClientServiceTest" time="0.46"/>
-  <testcase name="test_getClientById_clientDoesNotExist()" classname="com.revature.service.ClientServiceTest" time="0.005"/>
-  <testcase name="test_getClientById_invalidId()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
-  <testcase name="testGetClientById_positiveTest()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
-  <testcase name="test_editClientById_invalidId()" classname="com.revature.service.ClientServiceTest" time="0.088"/>
-  <testcase name="test_addClient_nonAlphabeticalCharactersInLastName()" classname="com.revature.service.ClientServiceTest" time="0.001"/>
+  <testcase name="test_addClient_positiveTest()" classname="com.revature.service.ClientServiceTest" time="0.512"/>
+  <testcase name="test_getClientById_clientDoesNotExist()" classname="com.revature.service.ClientServiceTest" time="0.006"/>
+  <testcase name="test_getClientById_invalidId()" classname="com.revature.service.ClientServiceTest" time="0.003"/>
+  <testcase name="testGetClientById_positiveTest()" classname="com.revature.service.ClientServiceTest" time="0.001"/>
+  <testcase name="test_editClientById_invalidId()" classname="com.revature.service.ClientServiceTest" time="0.094"/>
+  <testcase name="test_addClient_nonAlphabeticalCharactersInLastName()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
   <testcase name="test_addClient_nonAlphabeticalCharactersInFirstName()" classname="com.revature.service.ClientServiceTest" time="0.001"/>
-  <testcase name="test_addClient_negativeAge()" classname="com.revature.service.ClientServiceTest" time="0.001"/>
-  <testcase name="test_deleteClientById_sqlExceptionFromDao()" classname="com.revature.service.ClientServiceTest" time="0.004"/>
-  <testcase name="testGetAllClients()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
-  <testcase name="test_getClientById_sqlExceptionFromDao()" classname="com.revature.service.ClientServiceTest" time="0.004"/>
-  <testcase name="test_editClientById_clientDoesNotExist()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
-  <testcase name="test_deleteClientById_invalidId()" classname="com.revature.service.ClientServiceTest" time="0.0"/>
+  <testcase name="test_addClient_negativeAge()" classname="com.revature.service.ClientServiceTest" time="0.003"/>
+  <testcase name="test_deleteClientById_sqlExceptionFromDao()" classname="com.revature.service.ClientServiceTest" time="0.005"/>
+  <testcase name="testGetAllClients()" classname="com.revature.service.ClientServiceTest" time="0.005"/>
+  <testcase name="test_getClientById_sqlExceptionFromDao()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
+  <testcase name="test_editClientById_clientDoesNotExist()" classname="com.revature.service.ClientServiceTest" time="0.004"/>
+  <testcase name="test_deleteClientById_invalidId()" classname="com.revature.service.ClientServiceTest" time="0.003"/>
   <testcase name="test_editClientById()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
   <testcase name="test_deleteClientById_clientDoesNotExist()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
+  <testcase name="test_addClient_withLeadingAndTrailingNamesAndPhoneNumber()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
   <testcase name="test_deleteClientById()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
   <testcase name="test_editClientById_sqlExceptionFromDao()" classname="com.revature.service.ClientServiceTest" time="0.001"/>
-  <testcase name="test_addClient_phoneNumber()" classname="com.revature.service.ClientServiceTest" time="0.001"/>
+  <testcase name="test_addClient_phoneNumber()" classname="com.revature.service.ClientServiceTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

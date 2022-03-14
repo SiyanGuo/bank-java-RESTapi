@@ -112,6 +112,23 @@ public class ClientServiceTest {
 
     //Post - Negative
     @Test
+    public void test_addClient_withLeadingAndTrailingNamesAndPhoneNumber() throws SQLException {
+        ClientDao mockDao = mock(ClientDao.class);
+        ClientService clientService = new ClientService(mockDao);
+
+        when(mockDao.addClient(eq(new Client(0, "Serena", "Guo", 22, "647-000-0001"))))
+                .thenReturn(new Client(0, "Serena", "Guo", 22, "647-000-0001"));
+
+        Client actual = clientService.addClient(
+                new Client(0, "   Serena  ", "   Guo  ", 22, "   647-000-0001   ")
+        );
+
+        Client expected = new Client(0, "Serena", "Guo", 22, "647-000-0001");
+        Assertions.assertEquals(expected, actual);
+
+    }
+
+    @Test
     public void test_addClient_nonAlphabeticalCharactersInFirstName() throws SQLException {
 
         ClientDao mockDao = mock(ClientDao.class);
