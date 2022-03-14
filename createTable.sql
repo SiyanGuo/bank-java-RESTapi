@@ -47,7 +47,7 @@ VALUES
 ('Savings Account', nextval('account_number'), '6660.00','2011-12-21', 2),
 ('Chequing Account', nextval('account_number'), '5.04', '2003-04-05', 3),
 ('Chequing Account', nextval('account_number'), '333.69', '2000-08-08', 3),
-('Savings Account', nextval('account_number'), '245.40', '2001-06-06', 3),
+('Savings Account', nextval('account_number'), '775.40', '2001-06-06', 3),
 ('Chequing Account', nextval('account_number'), '710.85','2005-05-29', 4),
 ('Savings Account', nextval('account_number'), '10000.01','2008-09-13', 4),
 ('Savings Account', nextval('account_number'), '950.77','2009-10-17', 4),
