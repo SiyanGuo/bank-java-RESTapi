@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 public class ClientServiceTest {
 
-    //GET
+    //GET - Positive
     @Test
     public void testGetAllClients() throws SQLException {
 
@@ -53,6 +53,7 @@ public class ClientServiceTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    //GET - Negative
     @Test
     public void test_getClientById_clientDoesNotExist() throws SQLException, ClientNotFoundException {
 
@@ -94,7 +95,7 @@ public class ClientServiceTest {
         });
     }
 
-    //POST
+    //POST - Positive
     @Test
     public void test_addClient_positiveTest() throws SQLException{
         ClientDao mockDao = mock(ClientDao.class);
@@ -109,6 +110,7 @@ public class ClientServiceTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    //Post - Negative
     @Test
     public void test_addClient_nonAlphabeticalCharactersInFirstName() throws SQLException {
 
@@ -152,7 +154,23 @@ public class ClientServiceTest {
         });
     }
 
-    //PUT
+    //PUT - Positive
+    @Test
+    public void test_editClientById() throws SQLException, ClientNotFoundException {
+        ClientDao mockDao = mock(ClientDao.class);
+        Client fakeClient = new Client(7, "Serena", "Guo", 22, "647-000-0001");
+        when(mockDao.getClientById(anyInt())).thenReturn(new Client());
+        when(mockDao.updateClient(fakeClient))
+                .thenReturn(new Client(7, "Serena", "Guo", 22, "647-000-0001"));
+
+        ClientService clientService = new ClientService(mockDao);
+        Client actual = clientService.editClient("7", fakeClient);
+        Client expected = new Client(7, "Serena", "Guo", 22, "647-000-0001");
+        Assertions.assertEquals(expected, actual);
+
+    }
+
+    //PUT - Negative
     @Test
     public void test_editClientById_clientDoesNotExist() throws SQLException, ClientNotFoundException {
 
@@ -195,7 +213,20 @@ public class ClientServiceTest {
         });
     }
 
-    //DELETE
+    //DELETE - Positive
+    @Test
+    public void test_deleteClientById() throws SQLException, ClientNotFoundException {
+        ClientDao mockDao = mock(ClientDao.class);
+        ClientService clientService = new ClientService(mockDao);
+
+        when(mockDao.getClientById(eq(1))).thenReturn(new Client());
+        when(mockDao.deleteClientById(anyInt())).thenReturn(true);
+
+        boolean actual = clientService.deleteClient("1");
+        Assertions.assertTrue(true);
+    }
+
+    //DELETE - Negative
     @Test
     public void test_deleteClientById_clientDoesNotExist() throws SQLException, ClientNotFoundException {
 
