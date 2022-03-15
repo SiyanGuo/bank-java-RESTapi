@@ -54,7 +54,7 @@ public class AccountService {
 
             List<Account> accounts = accountDao.getAccountsByGreaterThan(clientId,amountGreater);
             if(accounts.isEmpty()) {
-                throw new AccountNotFoundException("Account was not found that balance is greater than " + greaterThan + " for client with id " + clientId);
+                throw new AccountNotFoundException("Account that balance is greater than " + greaterThan + " for client with id " + clientId + " was not found");
             }
 
             return this.accountDao.getAccountsByGreaterThan(clientId, amountGreater);
@@ -76,7 +76,7 @@ public class AccountService {
 
             List<Account> accounts = accountDao.getAccountsByLessThan(clientId, amountLess);
             if(accounts.isEmpty()) {
-                 throw new AccountNotFoundException("Account was not found that balance is less than " + lessThan + " for client with id " + clientId);
+                 throw new AccountNotFoundException("Account that balance is less than " + lessThan + " for client with id " + clientId + " was not found");
             }
 
             return this.accountDao.getAccountsByLessThan(clientId, amountLess);
@@ -103,7 +103,7 @@ public class AccountService {
 
             List<Account> accounts = accountDao.getAccountsByGreatAndLessThan(clientId, min, max);
             if(accounts.isEmpty()) {
-                throw new AccountNotFoundException("Account was not found that balance is less than " + max + " and greater than " + min + " for client with id " + clientId);
+                throw new AccountNotFoundException("Account that balance is less than " + max + " and greater than " + min + " for client with id " + clientId + " was not found");
             }
 
             return this.accountDao.getAccountsByGreatAndLessThan(clientId, min, max);
