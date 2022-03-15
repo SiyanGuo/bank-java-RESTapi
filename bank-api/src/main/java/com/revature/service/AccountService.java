@@ -101,7 +101,7 @@ public class AccountService {
                 throw new ClientNotFoundException("Client with id " + clientId + " was not found");
             }
 
-            List<Account> accounts = accountDao.getAccountsByGreatAndLessThan(clientId, max, min);
+            List<Account> accounts = accountDao.getAccountsByGreatAndLessThan(clientId, min, max);
             if(accounts.isEmpty()) {
                 throw new AccountNotFoundException("Account was not found that balance is less than " + max + " and greater than " + min + " for client with id " + clientId);
             }
