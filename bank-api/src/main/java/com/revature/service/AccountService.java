@@ -41,7 +41,7 @@ public class AccountService {
         }
     };
 
-    public List<Account> getAccountsByGreaterThan(String id, String greaterThan) throws ClientNotFoundException, SQLException {
+    public List<Account> getAccountsByGreaterThan(String id, String greaterThan) throws ClientNotFoundException, SQLException, AccountNotFoundException {
 
         try {
             int clientId = Integer.parseInt(id);
@@ -51,14 +51,19 @@ public class AccountService {
             if (client == null) {
                 throw new ClientNotFoundException("Client with id " + clientId + " was not found");
             }
-            return this.accountDao.getAccountsByGreaterThan(clientId, amountGreater);
 
+            List<Account> accounts = accountDao.getAccountsByGreaterThan(clientId,amountGreater);
+            if(accounts.isEmpty()) {
+                throw new AccountNotFoundException("Account was not found that balance is greater than " + greaterThan + " for client with id " + clientId);
+            }
+
+            return this.accountDao.getAccountsByGreaterThan(clientId, amountGreater);
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Parameters must be valid number");
         }
     };
 
-    public List<Account> getAccountsByLessThan(String id, String lessThan) throws ClientNotFoundException, SQLException {
+    public List<Account> getAccountsByLessThan(String id, String lessThan) throws ClientNotFoundException,AccountNotFoundException, SQLException {
 
         try {
             int clientId = Integer.parseInt(id);
@@ -69,13 +74,18 @@ public class AccountService {
                 throw new ClientNotFoundException("Client with id " + clientId + " was not found");
             }
 
+            List<Account> accounts = accountDao.getAccountsByLessThan(clientId, amountLess);
+            if(accounts.isEmpty()) {
+                 throw new AccountNotFoundException("Account was not found that balance is less than " + lessThan + " for client with id " + clientId);
+            }
+
             return this.accountDao.getAccountsByLessThan(clientId, amountLess);
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Parameters must be valid number");
         }
     };
 
-    public List<Account> getAccountsByGreatAndLessThan(String id, String greaterThan, String lessThan) throws ClientNotFoundException, SQLException {
+    public List<Account> getAccountsByGreatAndLessThan(String id, String greaterThan, String lessThan) throws ClientNotFoundException, SQLException, AccountNotFoundException {
 
         try {
             int clientId = Integer.parseInt(id);
@@ -89,6 +99,11 @@ public class AccountService {
             Client client = clientDao.getClientById(clientId);
             if (client == null) {
                 throw new ClientNotFoundException("Client with id " + clientId + " was not found");
+            }
+
+            List<Account> accounts = accountDao.getAccountsByGreatAndLessThan(clientId, max, min);
+            if(accounts.isEmpty()) {
+                throw new AccountNotFoundException("Account was not found that balance is less than " + max + " and greater than " + min + " for client with id " + clientId);
             }
 
             return this.accountDao.getAccountsByGreatAndLessThan(clientId, min, max);
