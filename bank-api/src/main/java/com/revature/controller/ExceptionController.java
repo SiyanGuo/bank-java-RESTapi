@@ -6,7 +6,7 @@ import io.javalin.http.ExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.security.auth.login.AccountNotFoundException;
+import com.revature.exception.AccountNotFoundException;
 
 public class ExceptionController implements Controller {
 

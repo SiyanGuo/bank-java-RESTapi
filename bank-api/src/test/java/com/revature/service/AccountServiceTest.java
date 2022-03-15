@@ -119,7 +119,7 @@ public class AccountServiceTest {
                 .thenReturn(new Account (2, "Chequing Account", 00001112, new BigDecimal(412.09), "2022-03-14", 3));
 
         Account actual = accountService.addAccount(
-                new Account (2, "   Chequing Account   ", 00001112, new BigDecimal(412.09), "   2022-03-14   ", 3), "3"
+                new Account (2, "   Chequing Account  ", 00001112, new BigDecimal(412.09), "   2022-03-14   ", 3), "3"
         );
 
         Account expected = fakeAccount;
@@ -131,7 +131,7 @@ public class AccountServiceTest {
 
         try {
             when(clientDao.getClientById(anyInt())).thenReturn(new Client());
-            accountService.addAccount(new Account (2, "Chequing Acco", 00001112, new BigDecimal(412.09), "2022-3-4", 3), "3");
+            accountService.addAccount(new Account (2, "Chequing Acco", 00001112, new BigDecimal(412.09), "2022-03-14", 3), "3");
             fail();
         } catch (IllegalArgumentException e) {
             String expectedMessage = "Account type must be either Chequing Account or Savings Account. Account type input was Chequing Acco";

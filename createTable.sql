@@ -21,7 +21,6 @@ client_id integer not null,
 constraint fk_client foreign key(client_id) references clients(id) on delete cascade
 );
 
--- create auto increment for account number
 create sequence account_number
 start 10101112
 increment 1
@@ -40,16 +39,17 @@ VALUES
 
 INSERT INTO accounts (a_type, a_number, balance, date_opened, client_id) 
 VALUES 
-('Chequing Account', nextval('account_number'), '225.33','2012-03-19', 1),
-('Chequing Account', nextval('account_number'), '710.85','2014-03-01', 1),
-('Savings Account', nextval('account_number'), '1070.98', '2020-02-02', 1),
-('Chequing Account', nextval('account_number'), '86.07','2009-10-17', 2),
+('Chequing Account', nextval('account_number'), '225.91','2012-03-19', 1),
+('Chequing Account', nextval('account_number'), '610.85','2014-08-01', 1),
+('Savings Account', nextval('account_number'), '1070.98', '2020-06-21', 1),
+('Savings Account', nextval('account_number'), '2100.25', '2021-12-12', 1),
+('Chequing Account', nextval('account_number'), '86.94','2009-10-17', 2),
 ('Savings Account', nextval('account_number'), '6660.00','2011-12-21', 2),
 ('Chequing Account', nextval('account_number'), '5.04', '2003-04-05', 3),
 ('Chequing Account', nextval('account_number'), '333.69', '2000-08-08', 3),
-('Savings Account', nextval('account_number'), '775.40', '2001-06-06', 3),
-('Chequing Account', nextval('account_number'), '710.85','2005-05-29', 4),
-('Savings Account', nextval('account_number'), '10000.01','2008-09-13', 4),
+('Savings Account', nextval('account_number'), '245.40', '2001-06-06', 3),
+('Chequing Account', nextval('account_number'), '442.85','2005-05-29', 4),
+('Savings Account', nextval('account_number'), '10001.01','2008-09-13', 4),
 ('Savings Account', nextval('account_number'), '950.77','2009-10-17', 4),
 ('Chequing Account', nextval('account_number'), '101.42','2017-12-05', 5),
 ('Savings Account', nextval('account_number'), '860.90','2021-12-09', 5),

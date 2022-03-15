@@ -70,11 +70,11 @@ public class ClientController implements Controller {
         } else {
             accounts = accountService.getAccountsByClient(id);
         }
-        if (accounts.isEmpty()) {
-            ctx.json("Account was not found");
-        } else {
+//        if (accounts.isEmpty()) {
+//            ctx.json("Account was not found");
+//        } else {
             ctx.json(accounts);
-        }
+       // }
 
     };
 

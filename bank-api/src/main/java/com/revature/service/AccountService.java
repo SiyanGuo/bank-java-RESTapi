@@ -41,7 +41,7 @@ public class AccountService {
         }
     };
 
-    public List<Account> getAccountsByGreaterThan(String id, String greaterThan) throws ClientNotFoundException, SQLException {
+    public List<Account> getAccountsByGreaterThan(String id, String greaterThan) throws ClientNotFoundException, SQLException, AccountNotFoundException {
 
         try {
             int clientId = Integer.parseInt(id);
@@ -51,14 +51,19 @@ public class AccountService {
             if (client == null) {
                 throw new ClientNotFoundException("Client with id " + clientId + " was not found");
             }
-            return this.accountDao.getAccountsByGreaterThan(clientId, amountGreater);
 
+            List<Account> accounts = accountDao.getAccountsByGreaterThan(clientId,amountGreater);
+            if(accounts.isEmpty()) {
+                throw new AccountNotFoundException("Account was not found that balance is greater than " + greaterThan + " for client with id " + clientId);
+            }
+
+            return this.accountDao.getAccountsByGreaterThan(clientId, amountGreater);
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Parameters must be valid number");
         }
     };
 
-    public List<Account> getAccountsByLessThan(String id, String lessThan) throws ClientNotFoundException, SQLException {
+    public List<Account> getAccountsByLessThan(String id, String lessThan) throws ClientNotFoundException,AccountNotFoundException, SQLException {
 
         try {
             int clientId = Integer.parseInt(id);
@@ -69,13 +74,18 @@ public class AccountService {
                 throw new ClientNotFoundException("Client with id " + clientId + " was not found");
             }
 
+            List<Account> accounts = accountDao.getAccountsByLessThan(clientId, amountLess);
+            if(accounts.isEmpty()) {
+                 throw new AccountNotFoundException("Account was not found that balance is less than " + lessThan + " for client with id " + clientId);
+            }
+
             return this.accountDao.getAccountsByLessThan(clientId, amountLess);
         } catch (NumberFormatException e){
             throw new IllegalArgumentException("Parameters must be valid number");
         }
     };
 
-    public List<Account> getAccountsByGreatAndLessThan(String id, String greaterThan, String lessThan) throws ClientNotFoundException, SQLException {
+    public List<Account> getAccountsByGreatAndLessThan(String id, String greaterThan, String lessThan) throws ClientNotFoundException, SQLException, AccountNotFoundException {
 
         try {
             int clientId = Integer.parseInt(id);
@@ -89,6 +99,11 @@ public class AccountService {
             Client client = clientDao.getClientById(clientId);
             if (client == null) {
                 throw new ClientNotFoundException("Client with id " + clientId + " was not found");
+            }
+
+            List<Account> accounts = accountDao.getAccountsByGreatAndLessThan(clientId, min, max);
+            if(accounts.isEmpty()) {
+                throw new AccountNotFoundException("Account was not found that balance is less than " + max + " and greater than " + min + " for client with id " + clientId);
             }
 
             return this.accountDao.getAccountsByGreatAndLessThan(clientId, min, max);
@@ -126,13 +141,6 @@ public class AccountService {
             a.setAccountType(a.getAccountType().trim());
             a.setDateOpened(a.getDateOpened().trim());
 
-            if ( !(a.getAccountType() != "Chequing Account" || a.getAccountType() !="Savings Account")) {
-                throw new IllegalArgumentException("Account type must be either Chequing Account or Savings Account. Account type input was " + a.getAccountType());
-            }
-            if (!a.getDateOpened().matches("^((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")) {
-                throw new IllegalArgumentException("Date format must be YYYY-MM-DD. Date input was " + a.getDateOpened());
-            }
-
             int id = Integer.parseInt(clientId);
 
             Client client = clientDao.getClientById(id);
@@ -140,7 +148,16 @@ public class AccountService {
                 throw new ClientNotFoundException("Client with id " + id + " was not found");
             }
 
+            if (!a.getDateOpened().matches("^((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")) {
+                throw new IllegalArgumentException("Date format must be YYYY-MM-DD. Date input was " + a.getDateOpened());
+            }
+
+            if ( !a.getAccountType().equals("Chequing Account") && !a.getAccountType().equals("Savings Account")) {
+                throw new IllegalArgumentException("Account type must be either Chequing Account or Savings Account. Account type input was " + a.getAccountType());
+            }
+
             return this.accountDao.addAccount(a, id);
+
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Client id must be a valid number");
         }
